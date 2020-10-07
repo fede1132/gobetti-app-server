@@ -1,7 +1,7 @@
-const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
-
 const axios = require('axios')
 const { parse } = require('node-html-parser')
+const fs = require('fs');
+var cleaner = require('clean-html')
 
 exports.scrapBase = async function (url) {
     // making a request to the base url
@@ -76,36 +76,81 @@ exports.scrapHour = async function (url, dir, value) {
             // as before we make a request
             // and parse it as html without
             // script, style, pre tag(s) and comments
-            body = parse(response.data, {
-                lowerCaseTagName: true,
-                script: true,
-                style: true,
-                pre: true,
-                comment: true
+            var ht = "";
+            cleaner.clean(response.data.toLowerCase(), (html) => ht=html)
+            body = parse(ht, {
+                lowerCaseTagName: false,
+                script: false,
+                style: false,
+                pre: false,
+                comment: false
             })
-            .querySelector("td.mathema")
-            .parentNode.parentNode
         })
-        .catch((error) => {
-            // if there is an error
-            // such as 404 (not found) we
-            // return it as an object
-            body = {
-                error: true,
-                code: error.response.status
-            }
-        }
-    )
-    if (typeof body === 'object' && body.error == true) {
+        // .catch((error) => {
+        //     // if there is an error
+        //     // such as 404 (not found) we
+        //     // return it as an object
+        //     body = {
+        //         error: true,
+        //         code: error.response.status
+        //     }
+        // })
+    if (typeof body === 'object' && body!=null && body.error) {
         return body;
     }
     // as this point we got our
     // hour as html element
     // we only need to scrap it and
     // convert it to json
-    var rows = body.querySelectorAll("td")
-    rows.forEach(element => {
-        if (element.childNodes.length==1) return
-        console.log(element.childNodes[8].rawText)
-    });
+    var rows = body.querySelector("table").querySelectorAll("tr");
+    var lessons = []
+    var hours = []
+    for (var j=0;j<rows.length;j++) {
+        if (j==0) continue
+        var row = rows[j]
+        var elements = row.childNodes
+        for (var i=0;i<elements.length;i++) {
+            var element = elements[i]
+            var text = element.rawText.replace("\n", "").replace("&nbsp;", "").trim();
+            if (i==0) {
+                hours.push(text)
+                continue
+            }
+            var attrs = element.rawAttrs
+            if (typeof attrs === 'undefined' || !attrs.includes("rowspan")) continue
+            var data = text.split("\n")
+            var rowspan = parseInt(attrs.match(/(?:rowspan=)\"([0-9"]*)/)[1].replace("\"", ""))
+            for (var k=0;k<rowspan;k++) {
+                var teachers = []
+                for (var l=1;l<data.length&&l!=data.length-1;l++) {
+                    teachers.push(data[l].trim())
+                }
+                var lesson = lessons[j]
+                if (typeof lesson === 'undefined') lesson = []
+                var day = 0
+                if (typeof lesson[0] !== 'undefined') {
+                    lesson.forEach(d => {
+                        if (d.day - day < 0) return
+                        if (d.day - day > 1) return
+                        day = d.day+1
+                    })
+                }
+                hour = {
+                    day: day,
+                    subject: data[0].trim(),
+                    teachers: teachers,
+                    classroom: data[data.length-1].trim(),
+                }
+                lesson[day] = hour
+                lessons[j] = lesson
+                if (j+k != j) {
+                    lesson = lessons[j+k]
+                    if (typeof lesson === 'undefined') lesson = []
+                    lesson[day] = hour
+                    lessons[j+k] = lesson
+                }
+            }
+        }
+    }
+    console.log(lessons)
 }

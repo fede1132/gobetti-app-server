@@ -1,0 +1,214 @@
+<html>
+  <head>
+    <title>i.i.s.s.&quot;piero gobetti&quot; - scandiano - orario 1h</title>
+    <meta name="description" content="i.i.s.s.&quot;piero gobetti&quot; - scandiano - orario scolastico">
+    <meta name="keywords" content="orario scolastico, i.i.s.s.&quot;piero gobetti&quot; - scandiano">
+    <meta name="robots" content="index, follow">
+  </head>
+  <body>
+    <p class="mathema">i.i.s.s.&quot;piero gobetti&quot; - scandiano</p>
+    <p></p>
+    <p class="mathema">orario classe 1h</p>
+    <p></p>
+    <table>
+      <tr>
+        <td class="mathema">&nbsp;</td>
+        <td class="mathema" nowrap="" colspan="1" rowspan="1">lun</td>
+        <td class="mathema" nowrap="" colspan="1" rowspan="1">mar</td>
+        <td class="mathema" nowrap="" colspan="1" rowspan="1">mer</td>
+        <td class="mathema" nowrap="" colspan="1" rowspan="1">gio</td>
+        <td class="mathema" nowrap="" colspan="1" rowspan="1">ven</td>
+        <td class="mathema" nowrap="" colspan="1" rowspan="1">sab</td>
+      </tr>
+      <tr>
+        <td class="mathema" nowrap="">8.00</td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="2">
+          <p id="nodecblack">ed. fisica</p>
+          <p id="nodecblack"><a href="../docenti/medici s..html" class="nodecblack">medici s.</a></p>
+          <p id="nodecblack"><a href="../aule/pal_iti.html" class="nodecblack">pal_iti</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="2">
+          <p id="nodecblack">laboratori tecnologici</p>
+          <p id="nodecblack"><a href="../docenti/zizzo m..html" class="nodecblack">zizzo m.</a></p>
+          <p id="nodecblack"><a href="../aule/ele 1.html" class="nodecblack">ele 1</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">inglese</p>
+          <p id="nodecblack"><a href="../docenti/aldini me.html" class="nodecblack">aldini me</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecwhite" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecwhite">diritto</p>
+          <p id="nodecwhite"><a href="../docenti/meldoli c..html" class="nodecwhite">meldoli c.</a></p>
+          <p id="nodecwhite"><a href="../aule/07.html" class="nodecwhite">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">ttrg</p>
+          <p id="nodecblack"><a href="../docenti/abissino c..html" class="nodecblack">abissino c.</a></p>
+          <p id="nodecblack"><a href="../docenti/ferrari b.b..html" class="nodecblack">ferrari b.b.</a></p>
+          <p id="nodecblack"><a href="../aule/ele 1.html" class="nodecblack">ele 1</a></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="3">
+          <p id="nodecblack">laboratori tecnologici</p>
+          <p id="nodecblack"><a href="../docenti/zizzo m..html" class="nodecblack">zizzo m.</a></p>
+          <p id="nodecblack"><a href="../aule/ele 1.html" class="nodecblack">ele 1</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+      </tr>
+      <tr>
+        <td class="mathema" nowrap="">9.00</td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">italiano e storia</p>
+          <p id="nodecblack"><a href="../docenti/itri c..html" class="nodecblack">itri c.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">matematica</p>
+          <p id="nodecblack"><a href="../docenti/manfredotti m..html" class="nodecblack">manfredotti m.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">italiano e storia</p>
+          <p id="nodecblack"><a href="../docenti/itri c..html" class="nodecblack">itri c.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+      </tr>
+      <tr>
+        <td class="mathema" nowrap="">10.00</td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">italiano e storia</p>
+          <p id="nodecblack"><a href="../docenti/itri c..html" class="nodecblack">itri c.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">ttrg</p>
+          <p id="nodecblack"><a href="../docenti/abissino c..html" class="nodecblack">abissino c.</a></p>
+          <p id="nodecblack"><a href="../aule/05.html" class="nodecblack">05</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">matematica</p>
+          <p id="nodecblack"><a href="../docenti/manfredotti m..html" class="nodecblack">manfredotti m.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">ttrg</p>
+          <p id="nodecblack"><a href="../docenti/abissino c..html" class="nodecblack">abissino c.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">fisica</p>
+          <p id="nodecblack"><a href="../docenti/davoli s..html" class="nodecblack">davoli s.</a></p>
+          <p id="nodecblack"><a href="../docenti/ferrari b.b..html" class="nodecblack">ferrari b.b.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+        </td>
+      </tr>
+      <tr>
+        <td class="mathema" nowrap="">11.10</td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">matematica</p>
+          <p id="nodecblack"><a href="../docenti/manfredotti m..html" class="nodecblack">manfredotti m.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">matematica</p>
+          <p id="nodecblack"><a href="../docenti/manfredotti m..html" class="nodecblack">manfredotti m.</a></p>
+          <p id="nodecblack"><a href="../aule/05.html" class="nodecblack">05</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecwhite" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecwhite">religione</p>
+          <p id="nodecwhite"><a href="../docenti/nunnari m..html" class="nodecwhite">nunnari m.</a></p>
+          <p id="nodecwhite"><a href="../aule/07.html" class="nodecwhite">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="2">
+          <p id="nodecblack">italiano e storia</p>
+          <p id="nodecblack"><a href="../docenti/itri c..html" class="nodecblack">itri c.</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">tic</p>
+          <p id="nodecblack"><a href="../docenti/abissino c..html" class="nodecblack">abissino c.</a></p>
+          <p id="nodecblack"><a href="../aule/info. 1.html" class="nodecblack">info. 1</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">ttrg</p>
+          <p id="nodecblack"><a href="../docenti/abissino c..html" class="nodecblack">abissino c.</a></p>
+          <p id="nodecblack"><a href="../docenti/ferrari b.b..html" class="nodecblack">ferrari b.b.</a></p>
+          <p id="nodecblack"><a href="../aule/ele 1.html" class="nodecblack">ele 1</a></p>
+        </td>
+      </tr>
+      <tr>
+        <td class="mathema" nowrap="">12.05</td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">inglese</p>
+          <p id="nodecblack"><a href="../docenti/aldini me.html" class="nodecblack">aldini me</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">tic</p>
+          <p id="nodecblack"><a href="../docenti/abissino c..html" class="nodecblack">abissino c.</a></p>
+          <p id="nodecblack"><a href="../docenti/ferrari b.b..html" class="nodecblack">ferrari b.b.</a></p>
+          <p id="nodecblack"><a href="../aule/info. 1.html" class="nodecblack">info. 1</a></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">fisica</p>
+          <p id="nodecblack"><a href="../docenti/davoli s..html" class="nodecblack">davoli s.</a></p>
+          <p id="nodecblack"><a href="../docenti/ferrari b.b..html" class="nodecblack">ferrari b.b.</a></p>
+          <p id="nodecblack"><a href="../aule/fisica.html" class="nodecblack">fisica</a></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">inglese</p>
+          <p id="nodecblack"><a href="../docenti/aldini me.html" class="nodecblack">aldini me</a></p>
+          <p id="nodecblack"><a href="../aule/07.html" class="nodecblack">07</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+        <td class="nodecblack" nowrap="" colspan="1" rowspan="1">
+          <p id="nodecblack">italiano e storia</p>
+          <p id="nodecblack"><a href="../docenti/itri c..html" class="nodecblack">itri c.</a></p>
+          <p id="nodecblack"><a href="../aule/12.html" class="nodecblack">12</a></p>
+          <p id="mathema">&nbsp;</p>
+          <p></p>
+        </td>
+      </tr>
+    </table>
+    <p class="mathema"><a href="../index.html" class="mathema">[indice tabelle orario]</a></p>
+    <p></p>
+    <p class="mathema">orario scolastico realizzato con <a href="http://www.orariofacile.com" class="mathema">orario
+        facile 8</a> (<a href="http://www.orariofacile.com" class="mathema">www.orariofacile.com</a>)</p>
+  </body>
+</html>
