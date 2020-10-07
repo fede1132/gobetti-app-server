@@ -86,15 +86,15 @@ exports.scrapHour = async function (url, dir, value) {
                 comment: false
             })
         })
-        // .catch((error) => {
-        //     // if there is an error
-        //     // such as 404 (not found) we
-        //     // return it as an object
-        //     body = {
-        //         error: true,
-        //         code: error.response.status
-        //     }
-        // })
+        .catch((error) => {
+            // if there is an error
+            // such as 404 (not found) we
+            // return it as an object
+            body = {
+                error: true,
+                code: error.response.status
+            }
+        })
     if (typeof body === 'object' && body!=null && body.error) {
         return body;
     }
@@ -130,8 +130,7 @@ exports.scrapHour = async function (url, dir, value) {
                 var day = 0
                 if (typeof lesson[0] !== 'undefined') {
                     lesson.forEach(d => {
-                        if (d.day - day < 0) return
-                        if (d.day - day > 1) return
+                        if (d.day - day < 0 || d.day - day > 1) return
                         day = d.day+1
                     })
                 }
