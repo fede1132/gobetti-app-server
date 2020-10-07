@@ -120,35 +120,68 @@ exports.scrapHour = async function (url, dir, value) {
             if (typeof attrs === 'undefined' || !attrs.includes("rowspan")) continue
             var data = text.split("\n")
             var rowspan = parseInt(attrs.match(/(?:rowspan=)\"([0-9"]*)/)[1].replace("\"", ""))
-            for (var k=0;k<rowspan;k++) {
-                var teachers = []
-                for (var l=1;l<data.length&&l!=data.length-1;l++) {
-                    teachers.push(data[l].trim())
-                }
-                var lesson = lessons[j]
-                if (typeof lesson === 'undefined') lesson = []
-                var day = 0
-                if (typeof lesson[0] !== 'undefined') {
-                    lesson.forEach(d => {
-                        if (d.day - day < 0 || d.day - day > 1) return
-                        day = d.day+1
-                    })
-                }
-                hour = {
-                    day: day,
-                    subject: data[0].trim(),
-                    teachers: teachers,
-                    classroom: data[data.length-1].trim(),
-                }
-                lesson[day] = hour
-                lessons[j] = lesson
-                if (j+k != j) {
-                    lesson = lessons[j+k]
-                    if (typeof lesson === 'undefined') lesson = []
-                    lesson[day] = hour
-                    lessons[j+k] = lesson
-                }
+            var teachers = []
+            if (data.length-2==1) teachers=data[1].trim()
+            else for (var l=1;l<data.length&&l!=data.length-1;l++) {
+                teachers.push(data[l].trim())
             }
+            var day = -1;
+            var obj = null;
+            for (var k=0;k<rowspan;k++) {
+                var lesson = lessons[j+k]
+                if (typeof lesson === 'undefined') lesson = []
+                if (day==-1) {
+                    if (typeof lesson[0] == null) day = 0
+                    else for (var m=0;m<6;m++) {
+                        if (lesson[m] != null) continue
+                        else {
+                            day = m
+                            break
+                        }
+                    }
+                }
+                if (obj==null) 
+                    obj = {
+                        teacher: teachers,
+                        subject: data[0].trim(),
+                        classroom: data[data.length-1].trim()
+                    }
+                lesson[day] = obj
+                lessons[j+k] = lesson
+            }
+            // for (var k=0;k<rowspan;k++) {
+            //     var teachers = []
+            //     for (var l=1;l<data.length&&l!=data.length-1;l++) {
+            //         teachers.push(data[l].trim())
+            //     }
+            //     if (teachers.length==1) teachers=teachers[0] 
+            //     var lesson = lessons[j]
+            //     if (typeof lesson === 'undefined') lesson = []
+            //     var day = 0
+            //     if (typeof lesson[0] !== 'undefined') {
+            //         for (var m=0;m<6;m++) {
+            //             if (typeof lesson[m] !== 'undefined') continue
+            //             else {
+            //                 day = m
+            //                 break
+            //             }
+            //         }
+            //     }
+            //     hour = {
+            //         day: day,
+            //         subject: data[0].trim(),
+            //         teachers: teachers,
+            //         classroom: data[data.length-1].trim(),
+            //     }
+            //     lesson[day] = hour
+            //     lessons[j] = lesson
+            //     if (j+k != j) {
+            //         lesson = lessons[j+k]
+            //         if (typeof lesson === 'undefined') lesson = []
+            //         lesson[day] = hour
+            //         lessons[j+k] = lesson
+            //     }
+            // }
         }
     }
     console.log(lessons)

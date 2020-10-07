@@ -29,5 +29,5 @@ async function check() {
         value: url,
         time: Math.round(Date.now() / 1000)
     })
-    await scrap.scrapHour(`${process.env.URL_BASE}${url}`, "Classi", "1H")
+    await scrap.scrapHour(`${process.env.URL_BASE}${url}`, "Docenti", "Abissino%20C.")
 }
