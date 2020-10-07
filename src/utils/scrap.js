@@ -77,12 +77,14 @@ exports.scrapHour = async function (url, dir, value) {
             // and parse it as html without
             // script, style, pre tag(s) and comments
             body = parse(response.data, {
-                lowerCaseTagName: false,
-                script: false,
-                style: false,
-                pre: false,
-                comment: false
+                lowerCaseTagName: true,
+                script: true,
+                style: true,
+                pre: true,
+                comment: true
             })
+            .querySelector("td.mathema")
+            .parentNode.parentNode
         })
         .catch((error) => {
             // if there is an error
@@ -97,11 +99,13 @@ exports.scrapHour = async function (url, dir, value) {
     if (typeof body === 'object' && body.error == true) {
         return body;
     }
-    body = body.querySelector("tr").parentNode
     // as this point we got our
     // hour as html element
     // we only need to scrap it and
     // convert it to json
-    var rows = body.querySelectorAll("tr")
-    console.log(body.childNodes)
+    var rows = body.querySelectorAll("td")
+    rows.forEach(element => {
+        if (element.childNodes.length==1) return
+        console.log(element.childNodes[8].rawText)
+    });
 }
