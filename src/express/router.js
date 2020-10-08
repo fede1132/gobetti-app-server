@@ -4,7 +4,11 @@ var scrap = require('./../utils/scrap.js')
 
 // get last hour url
 router.get('/hour', (req, res) => {
-    res.send(cache.has("HourURL")?JSON.stringify(cache.get("HourURL")):"{error: true, message: \"not available\"}")
+    res.send(cache.has("HourURL")?JSON.stringify(cache.get("HourURL").value):"{error: true, message: \"not available\"}")
+})
+
+router.get('/hour/values', (req, res) => {
+    res.send(cache.has("HourValues")?cache.get("HourValues").value:"{error: true, message: \"not available\"}")
 })
 
 router.get('/hour/:type/:value',  async (req, res) => {

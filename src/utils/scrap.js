@@ -69,14 +69,57 @@ exports.scrapBase = async function (url) {
     return hour;
 }
 
+exports.scrapValues = async function (url) {
+    var body = ""
+    await axios.get(`${url}index.html`)
+        .then((response) => {
+            var ht = ""
+            cleaner.clean(response.data.toLowerCase(), (html)=>ht=html)
+            body = parse(ht, {
+                lowerCaseTagName: false,
+                script: false,
+                style: false,
+                pre: false,
+                comment: false
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
+    body = body.querySelector("table").querySelectorAll("td")
+    var values = {}
+    for (var i=0;i<body.length;i++) {
+        var p = body[i]
+        if (p._tag_name !== 'td') continue
+        var value = []
+        var arr = p.childNodes[1].childNodes
+        var type = p.childNodes[0].rawText.trim();
+        for (var j=0;j<arr.length;j++) {
+            var node = p.childNodes[j]
+            if (typeof node === 'undefined') continue
+            for (var k=0;k<node.childNodes.length;k++) {
+                var a = node.childNodes[k]
+                if (typeof a === 'undefined' 
+                || a._tag_name === 'br' 
+                || a.rawText.trim() === '\n'
+                || a.rawText.trim() === '' 
+                || a.rawText.trim() === 'secondo calendario.') continue
+                var text = a.rawText.replace("\r", "").replace("\n", "").trim()
+                value.push(text)
+            }
+        }
+        values[type] = value
+    }
+    return values
+}
+
 exports.scrapHour = async function (url, dir, value) {
-    var body = "";
+    var body = ""
     await axios.get(`${url}${dir}/${value}.html`)
         .then((response) => {
             // as before we make a request
             // and parse it as html without
             // script, style, pre tag(s) and comments
-            var ht = "";
+            var ht = ""
             cleaner.clean(response.data.toLowerCase(), (html) => ht=html)
             body = parse(ht, {
                 lowerCaseTagName: false,

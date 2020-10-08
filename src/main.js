@@ -25,9 +25,11 @@ var scrap = require('./utils/scrap.js')
 check()
 async function check() {
     var hourURL = cache.get("HourURL")
-    if (cache.unix() - hourURL.time > process.env.CHECK_DELAY) {
+    if (cache.unix() - 0 > process.env.CHECK_DELAY) {
         var url = await scrap.scrapBase(process.env.URL_BASE);
+        var values = await scrap.scrapValues(`${process.env.URL_BASE}${url}`)
         cache.set("HourURL", url)
+        cache.set("HourValues", values)
     }
     setTimeout(check, process.env.CHECK_DELAY*1000)
 }
