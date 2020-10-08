@@ -22,12 +22,12 @@ app.listen(port, ()=>console.log(`[WEB] Listening on ${port}`))
 
 var scrap = require('./utils/scrap.js')
 // start the scraping
-check();
+check()
 async function check() {
-    var url = await scrap.scrapBase(process.env.URL_BASE);
-    cache.set("HourURL", {
-        value: url,
-        time: Math.round(Date.now() / 1000)
-    })
-    await scrap.scrapHour(`${process.env.URL_BASE}${url}`, "Docenti", "Abissino%20C.")
+    var hourURL = cache.get("HourURL")
+    if (cache.unix() - hourURL.time > process.env.CHECK_DELAY) {
+        var url = await scrap.scrapBase(process.env.URL_BASE);
+        cache.set("HourURL", url)
+    }
+    setTimeout(check, process.env.CHECK_DELAY*1000)
 }

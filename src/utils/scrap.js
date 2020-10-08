@@ -127,8 +127,9 @@ exports.scrapHour = async function (url, dir, value) {
             // and remove the newline char and
             // the space char then we trim it
             var text = element.rawText.replace("\n", "").replace("&nbsp;", "").trim();
-            // if it is the first child it is the hour number and we save it
-            if (i==0) {
+            // if the result of parseFloat is above 0
+            // we can say it's the hour time
+            if (parseFloat(text) > 0) {
                 hours.push(text)
                 continue
             }
@@ -195,5 +196,10 @@ exports.scrapHour = async function (url, dir, value) {
                 lessons[j+k] = lesson
             }
         }
+    }
+    lessons.shift()
+    return {
+        lessons: lessons,
+        hours: hours
     }
 }

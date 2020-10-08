@@ -1,1 +1,5 @@
+# ignore local installe modules
 /node_modules
+
+# ignore ssl files
+/ssl
