@@ -1,5 +1,12 @@
-# ignore local installe modules
+# ignore local installed modules
 /node_modules
 
 # ignore ssl files
 /ssl
+
+# ignore any compiled js file
+*.js
+*.js.map
+
+# ignore compiled files
+/out

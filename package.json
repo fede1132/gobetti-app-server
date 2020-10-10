@@ -1,20 +1,25 @@
 {
-  "name": "gobetti-backend",
+  "name": "gobetti-app-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Fede1132",
   "license": "ISC",
   "dependencies": {
+    "@std/esm": "^0.26.0",
+    "@tinyhttp/app": "^0.4.15",
+    "@types/better-sqlite3": "^5.4.0",
     "axios": "^0.20.0",
-    "better-sqlite3": "^7.1.1",
-    "clean-html": "^1.5.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "env-var": "^6.3.0",
     "node-html-parser": "^1.2.21",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3"
   }
 }
