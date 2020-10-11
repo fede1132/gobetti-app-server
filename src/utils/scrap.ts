@@ -34,8 +34,7 @@ export async function scrapBase() {
         .then((response: any) => {
             const html = response.data
             const $ = cheerio.load(html)
-            console.log("dollar sign")
-            console.log(article = $("#jsn-mainbody > div > div > div.jsn-article-content > p:nth-child(8) > span > a")['0'].attribs.href.replace("index.html", ""))
+            article = $("#jsn-mainbody > div > div > div.jsn-article-content > p:nth-child(8) > span > a")['0'].attribs.href.replace("index.html", "")
         })
     // once the axios request is complete
     // we got our content parsed and we can
@@ -83,14 +82,29 @@ export async function scrapValues(url: string) {
 
 export async function scrapHour(url: string, dir: string, value: string) {
     var trs: any
+    var nodes = []
+    var $
     await http.get(`${url}${dir}/${value}.html`)
         .then((response) => {
             // as before we make a request
             // and parse it as html without
             // script, style, pre tag(s) and comments
             const html = response.data
-            const $ = cheerio.load(html)
+            $ = cheerio.load(html)
             trs = $("body > center:nth-child(2) > table > tbody > tr")
+            for (var i=0;i<trs.length;i++) {
+                var row = []
+                var len = $(`body > center:nth-child(2) > table > tbody > tr:nth-child(${i}) > td`).length
+                for (var k=0;k<len;k++) {
+                    var hour = []
+                    $(`body > center:nth-child(2) > table > tbody > tr:nth-child(${k}) > td > p#nodecBlack`)
+                        .each(e=>{
+                            console.log(`$$$\n${e.children[0].data}`)
+                        })
+                    row.push(hour)
+                }
+                nodes.push(row)
+            }
         })
         .catch((error) => {
             // if there is an error
@@ -101,14 +115,10 @@ export async function scrapHour(url: string, dir: string, value: string) {
                 code: error.response.status
             }
         })
+    console.log(nodes)
     if (typeof trs === 'object' && trs!=null && trs.error) {
         return trs;
     }
-    // as this point we got our
-    // hour as html element
-    // we only need to scrap it and
-    // convert it to json
-
     // first of all we need to get the
     // table that contains every
     // subject, clasroom and teacher
@@ -128,24 +138,21 @@ export async function scrapHour(url: string, dir: string, value: string) {
         var elements = row.children
         for (var i=0;i<elements.length;i++) {
             var element = elements[i]
-            fs.writeFile('out.txt', `\n$$$\n${JSON.stringify(element)}`, (err: any) => {
-                if (err) {
-                    console.error(err)
-                }
-            })
+            if (typeof element.children === 'undefined' || typeof element.attribs === 'undefined') continue
             // we get the text of the child
             // and remove the newline char and
             // the space char then we trim it
-            var text = element.data.replace("\n", "").replace("&nbsp;", "").trim();
-            // if the result of parseFloat is above 0
-            // we can say it's the hour time
-            if (parseFloat(text) > 0) {
-                hours.push(text)
-                continue
+            if (element.children.length == 1) {
+                var text = element.children[0].data.replace("\n", "").replace("&nbsp;", "").trim();
+                // if the result of parseFloat is above 0
+                // we can say it's the hour time
+                if (parseFloat(text) > 0) {
+                    hours.push(text)
+                    continue
+                }
             }
-            var data = text.split("\n")
-            var rowspan = parseInt(element.attribs.rowspan)
-            var teachers = []
+            var data: Array<string> = []
+            var teachers: any = []
             // then we need our teacher
             // we start a loop from 1
             // to the length of data array 
@@ -159,6 +166,7 @@ export async function scrapHour(url: string, dir: string, value: string) {
             // now we start a loop with the duration
             // of number inside rowspawn attribe
             // we got before
+            var rowspan = element.attribs.rowspan
             for (var k=0;k<rowspan;k++) {
                 var lesson: any = lessons[j+k]
                 // let's get our lesson from
@@ -189,8 +197,8 @@ export async function scrapHour(url: string, dir: string, value: string) {
                 if (obj==null) 
                     obj = {
                         teacher: teachers,
-                        subject: data[0].trim(),
-                        classroom: data[data.length-1].trim()
+                        subject: data[0],
+                        classroom: data[data.length-1]
                     }
                 // attach the information to 
                 // our lesson in the current day
