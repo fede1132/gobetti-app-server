@@ -4,6 +4,9 @@ import {Router} from './http/router'
 import { Cache } from './utils/cache'
 import * as scrap from './utils/scrap'
 
+// argv
+export var verbose: boolean = process.argv.indexOf('-v') != -1
+
 // http server
 new Router()
 

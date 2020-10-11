@@ -3,10 +3,11 @@
 // long stacktrace
 // (verbose will be removed during production)
 import Database = require('better-sqlite3')
+import { verbose } from '../main'
 
 export class Cache {
     // db connection
-    db = new Database('./cache.db',  {verbose: console.log})
+    db = new Database('./cache.db', verbose?{verbose: (str)=>console.log(`[SQL Verbose] Query: '${str}'`)}:{} )
 
     constructor() {
         // create tables

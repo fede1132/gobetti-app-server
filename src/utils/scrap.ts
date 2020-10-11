@@ -1,4 +1,5 @@
 import * as axios from 'axios'
+import { cache } from '../main'
 import { URL_BASE } from './settings'
 
 var cheerio = require('cheerio');
@@ -57,7 +58,7 @@ export async function scrapValues(url: string) {
         if (p.name !== 'td') continue
         var value = []
         var arr = p.children[1].children
-        var type = p.children[0].data.replace("\n", "").trim();
+        var type = p.children[0].data.replace("\n", "").trim().toLowerCase();
         for (var j=1;j<arr.length;j++) {
             var node = p.children[j]
             if (typeof node === 'undefined' || node == null) continue
@@ -82,28 +83,48 @@ export async function scrapValues(url: string) {
 
 export async function scrapHour(url: string, dir: string, value: string) {
     var trs: any
-    var nodes = []
+    var nodes: any = []
     var $
     await http.get(`${url}${dir}/${value}.html`)
-        .then((response) => {
+        .then((response: any) => {
             // as before we make a request
             // and parse it as html without
             // script, style, pre tag(s) and comments
             const html = response.data
             $ = cheerio.load(html)
             trs = $("body > center:nth-child(2) > table > tbody > tr")
+            var classrooms = JSON.parse(cache.get('HourValues').value).aule
             for (var i=0;i<trs.length;i++) {
                 var row = []
                 var len = $(`body > center:nth-child(2) > table > tbody > tr:nth-child(${i}) > td`).length
-                for (var k=0;k<len;k++) {
-                    var hour = []
-                    $(`body > center:nth-child(2) > table > tbody > tr:nth-child(${k}) > td > p#nodecBlack`)
-                        .each(e=>{
-                            console.log(`$$$\n${e.children[0].data}`)
+                for (var k = 0; k <= len; k++) {
+                    var hour: any = []
+                    var count = 0
+                    var rowspan: number = 0
+                    $(`body > center:nth-child(2) > table > tbody > tr:nth-child(${i}) > td:nth-child(${k}) > p`)
+                        .each((index: number, e: any) => {
+                            if (typeof e.children === undefined || typeof e.attribs == undefined || e.attribs.id === undefined || e.attribs.id === 'mathema') return
+                            rowspan = parseInt(e.parent.attribs.rowspan)
+                            var text;
+                            if (e.children[0].name !== 'a') {
+                                text = e.children[0].data
+                            } else {
+                                text = e.children[0].children[0].data
+                            }
+                            hour.push(text)
+                            if (count != 0 && classrooms.indexOf(text) != -1 && hour.length > 0) {
+                                hour.push(rowspan)
+                                row.push(hour)
+                                hour = []
+                                count=0
+                            } else count++
                         })
-                    row.push(hour)
+                    if (hour.length > 0) {
+                        hour.push(rowspan)
+                        row.push(hour)
+                    }
                 }
-                nodes.push(row)
+                if (row.length > 0)nodes.push(row)
             }
         })
         .catch((error) => {
@@ -115,7 +136,6 @@ export async function scrapHour(url: string, dir: string, value: string) {
                 code: error.response.status
             }
         })
-    console.log(nodes)
     if (typeof trs === 'object' && trs!=null && trs.error) {
         return trs;
     }
@@ -127,46 +147,29 @@ export async function scrapHour(url: string, dir: string, value: string) {
     var hours = []
     // then we loop throu each row
     // in the table
-    for (var j=0;j<trs.length;j++) {
-        // we skip the first row because it contains the day name
-        if (j==0) continue
+    for (var j=0;j<nodes.length;j++) {
         // then we get the row by
         // picking it from our array
-        var row = trs[j]
+        var row = nodes[j]
         // then we get every child in 
         // in our row and we loop throu it
-        var elements = row.children
-        for (var i=0;i<elements.length;i++) {
-            var element = elements[i]
-            if (typeof element.children === 'undefined' || typeof element.attribs === 'undefined') continue
-            // we get the text of the child
-            // and remove the newline char and
-            // the space char then we trim it
-            if (element.children.length == 1) {
-                var text = element.children[0].data.replace("\n", "").replace("&nbsp;", "").trim();
-                // if the result of parseFloat is above 0
-                // we can say it's the hour time
-                if (parseFloat(text) > 0) {
-                    hours.push(text)
-                    continue
-                }
-            }
-            var data: Array<string> = []
+        for (var i=0;i<row.length;i++) {
+            var element = row[i]
             var teachers: any = []
             // then we need our teacher
             // we start a loop from 1
             // to the length of data array 
             // minius 1
-            if (data.length-2==1) teachers=data[1].trim()
-            else for (var l=1;l<data.length&&l!=data.length-1;l++) {
-                teachers.push(data[l].trim())
+            if (element.length-3==1) teachers=element[1]
+            else for (var l=1;l<element.length-1&&l!=element.length-1;l++) {
+                teachers.push(element[l])
             }
             var day = -1;
             var obj = null;
             // now we start a loop with the duration
             // of number inside rowspawn attribe
             // we got before
-            var rowspan = element.attribs.rowspan
+            var rowspan = element[element.length - 1]
             for (var k=0;k<rowspan;k++) {
                 var lesson: any = lessons[j+k]
                 // let's get our lesson from
@@ -197,8 +200,8 @@ export async function scrapHour(url: string, dir: string, value: string) {
                 if (obj==null) 
                     obj = {
                         teacher: teachers,
-                        subject: data[0],
-                        classroom: data[data.length-1]
+                        subject: element[0],
+                        classroom: element[element.length-2]
                     }
                 // attach the information to 
                 // our lesson in the current day
@@ -211,6 +214,6 @@ export async function scrapHour(url: string, dir: string, value: string) {
     lessons.shift()
     return {
         lessons: lessons,
-        hours: hours
+        //hours: hours
     }
 }

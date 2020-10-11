@@ -1,13 +1,19 @@
 import { App } from '@tinyhttp/app'
-import { URL_BASE, CHECK_DELAY } from '../utils/settings'
-import {cache} from '../main'
+import { logger } from '@tinyhttp/logger'
+import { CHECK_DELAY } from '../utils/settings'
+import {cache, verbose} from '../main'
 import * as scrap from '../utils/scrap'
 import * as env from 'env-var'
+import { METHODS } from 'http'
 
 export class Router {
     app: App = new App()
 
     constructor() {
+
+        if (verbose)
+            this.app.use(logger({timestamp: { format: 'HH:mm:ss' }, output: { callback: console.log, color: true }}))
+
         // get last hour url
         this.app.get('/hour', async (req, res) => {
             res.send(cache.has("HourURL")?cache.get("HourURL").value:"{error: true, message: \"not available\"}")
@@ -35,8 +41,9 @@ export class Router {
             var obj = await scrap.scrapHour(`${cache.get("HourURL").value}`, type, req.params.value)
             var unix = cache.unix()
             res.send(`{"time": ${unix}, "value": ${JSON.stringify(obj)}}`)
-            cache.set(`${type}:${req.params.value}`, obj)
+            //cache.set(`${type}:${req.params.value}`, obj)
         })
+
         const port: number = env.get('PORT').default(8000).asPortNumber()
         this.app.listen(port, ()=>console.log(`[HTTP] Listening on ${port}`)) 
     }

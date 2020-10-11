@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": "ts,json",
     "ignore": ["src/**/*.spec.ts"],
-    "exec": "npx ts-node ./src/main.ts --lib es2019,dom"   
+    "exec": "npx ts-node ./src/main.ts --lib es2019,dom -v"   
 }
