@@ -1,105 +1,78 @@
 import * as axios from 'axios'
-import { parse } from 'node-html-parser'
+import { URL_BASE } from './settings'
 
-export async function scrapBase(url: string) {
+var cheerio = require('cheerio');
+var fs = require('fs')
+
+
+const http = axios.default.create({
+    baseURL: "http://" + URL_BASE,
+    timeout: 20000,
+    headers: {"Host": URL_BASE}
+})
+
+export async function scrapBase() {
     // making a request to the base url
-    var body: any
-    await axios.default.get(url)
+    var article: string = ""
+    await http.get("")
         .then((response: any) => {
             // once got the data from the site
-            // we parse it using html-parser
-            // then we provie a map of booleans
-            // to let the parser to collect useless data
-            // and use much ram
-            body = parse(response.data, {
-                lowerCaseTagName: false,
-                script: false,
-                style: false,
-                pre: false,
-                comment: false
-            })
+            // we parse it using cheerio
+            // and we provide the selector to
+            // the `a` tag that contains the href
+            const html = response.data
+            const $ = cheerio.load(html)
+            article = $("#jsn-pleft > div:nth-child(1) > div.jsn-middle > div > div > ul > li > a")['0'].attribs.href
+        }).catch(err => {
+            console.log(err)
         })
-    // here we extract the href contenct of "a" tag
-    // that contains the last article url
-    var article = body
-        .querySelector("#jsn-pleft")
-        .querySelector("div")
-        .querySelector("div.jsn-middle")
-        .querySelector("div")
-        .querySelector("div")
-        .querySelector("ul")
-        .querySelector("li.item2939.order1.first")
-        .querySelector("a").rawAttrs
-        // here we match for a "href" tag
-        // and extract it content
-        .match(/href=(["'])(.*?)\1/)[2]
     // once we got the last article url
     // we make a new axios request ot its url
     // then we parse the content of the page in the
     // same way we parsed the base url above
-    await axios.default.get(url+article)
+    await http.get(article)
         .then((response: any) => {
-            body = parse(response.data, {
-                lowerCaseTagName: false,
-                script: false,
-                style: false,
-                pre: false,
-                comment: false
-            })
+            const html = response.data
+            const $ = cheerio.load(html)
+            console.log("dollar sign")
+            console.log(article = $("#jsn-mainbody > div > div > div.jsn-article-content > p:nth-child(8) > span > a")['0'].attribs.href.replace("index.html", ""))
         })
     // once the axios request is complete
     // we got our content parsed and we can
     // start scraping the page to find the
     // url we want
-    var hour = body
-        .querySelector("#jsn-mainbody")
-        .querySelector("div")
-        .querySelector("div")
-        .querySelector("div.jsn-article-content")
-        .querySelectorAll("p")[6]
-        .querySelector("span")
-        .querySelector("a").rawAttrs
-        // here we match for a "href" tag
-        // and extract it content
-        .match(/href=(["'])(.*?)\1/)[2]
-        // removing the page from the url we got
-        .replace("index.html", "")
-    return hour;
+    return article;
 }
 
 export async function scrapValues(url: string) {
-    var body: any
-    await axios.default.get(`${url}index.html`)
+    var tds: any
+    await http.get(`${url}index.html`)
         .then((response: any) => {
-            body = parse(response.data.toLowerCase(), {
-                lowerCaseTagName: false,
-                script: false,
-                style: false,
-                pre: false,
-                comment: false
-            })
-        }).catch((err) => {
-            console.log(err)
+            const html = response.data
+            const $ = cheerio.load(html)
+            tds = $("body > center:nth-child(2) > table > tbody > tr > td")
         })
-    body = body.querySelector("table").querySelectorAll("td")
     var values: any = {}
-    for (var i=0;i<body.length;i++) {
-        var p = body[i]
-        if (p._tag_name !== 'td') continue
+    for (var i=0;i<tds.length;i++) {
+        var p = tds[i]
+        if (p.name !== 'td') continue
         var value = []
-        var arr = p.childNodes[1].childNodes
-        var type = p.childNodes[0].rawText.trim();
-        for (var j=0;j<arr.length;j++) {
-            var node = p.childNodes[j]
-            if (typeof node === 'undefined') continue
-            for (var k=0;k<node.childNodes.length;k++) {
-                var a = node.childNodes[k]
+        var arr = p.children[1].children
+        var type = p.children[0].data.replace("\n", "").trim();
+        for (var j=1;j<arr.length;j++) {
+            var node = p.children[j]
+            if (typeof node === 'undefined' || node == null) continue
+            for (var k=0;k<node.children.length;k++) {
+                var a = node.children[k]
+                if (a.children === 'undefined' || a.children == null) continue
+                a = a.children[0]
                 if (typeof a === 'undefined' 
-                || a._tag_name === 'br' 
-                || a.rawText.trim() === '\n'
-                || a.rawText.trim() === '' 
-                || a.rawText.trim() === 'secondo calendario.') continue
-                var text = a.rawText.replace("\r", "").replace("\n", "").trim()
+                    || typeof a.data === 'undefined'
+                    || a.name === 'br' 
+                    || a.data.replace("\n", "").trim() === '\n'
+                    || a.data.replace("\n", "").trim() === '' 
+                    || a.data.replace("\n", "").trim() === 'secondo calendario.') continue
+                var text = a.data.replace("\r", "").replace("\n", "").trim()
                 value.push(text)
             }
         }
@@ -109,31 +82,27 @@ export async function scrapValues(url: string) {
 }
 
 export async function scrapHour(url: string, dir: string, value: string) {
-    var body: any
-    await axios.default.get(`${url}${dir}/${value}.html`)
+    var trs: any
+    await http.get(`${url}${dir}/${value}.html`)
         .then((response) => {
             // as before we make a request
             // and parse it as html without
             // script, style, pre tag(s) and comments
-            body = parse(response.data.toLowerCase(), {
-                lowerCaseTagName: false,
-                script: false,
-                style: false,
-                pre: false,
-                comment: false
-            })
+            const html = response.data
+            const $ = cheerio.load(html)
+            trs = $("body > center:nth-child(2) > table > tbody > tr")
         })
         .catch((error) => {
             // if there is an error
             // such as 404 (not found) we
             // return it as an object
-            body = {
+            trs = {
                 error: true,
                 code: error.response.status
             }
         })
-    if (typeof body === 'object' && body!=null && body.error) {
-        return body;
+    if (typeof trs === 'object' && trs!=null && trs.error) {
+        return trs;
     }
     // as this point we got our
     // hour as html element
@@ -144,41 +113,38 @@ export async function scrapHour(url: string, dir: string, value: string) {
     // table that contains every
     // subject, clasroom and teacher
     // in our hour
-    var rows = body.querySelector("table").querySelectorAll("tr");
     var lessons = []
     var hours = []
     // then we loop throu each row
     // in the table
-    for (var j=0;j<rows.length;j++) {
+    for (var j=0;j<trs.length;j++) {
         // we skip the first row because it contains the day name
         if (j==0) continue
         // then we get the row by
         // picking it from our array
-        var row = rows[j]
+        var row = trs[j]
         // then we get every child in 
         // in our row and we loop throu it
-        var elements = row.childNodes
+        var elements = row.children
         for (var i=0;i<elements.length;i++) {
             var element = elements[i]
+            fs.writeFile('out.txt', `\n$$$\n${JSON.stringify(element)}`, (err: any) => {
+                if (err) {
+                    console.error(err)
+                }
+            })
             // we get the text of the child
             // and remove the newline char and
             // the space char then we trim it
-            var text = element.rawText.replace("\n", "").replace("&nbsp;", "").trim();
+            var text = element.data.replace("\n", "").replace("&nbsp;", "").trim();
             // if the result of parseFloat is above 0
             // we can say it's the hour time
             if (parseFloat(text) > 0) {
                 hours.push(text)
                 continue
             }
-            // we get the html attributes of
-            // the child to get the rowspan
-            var attrs = element.rawAttrs
-            // check if the attributes are null or there is no rowspan
-            if (typeof attrs === 'undefined' || !attrs.includes("rowspan")) continue
             var data = text.split("\n")
-            // with this regex we get only the number
-            // inside the rowspawn attribe
-            var rowspan = parseInt(attrs.match(/(?:rowspan=)\"([0-9"]*)/)[1].replace("\"", ""))
+            var rowspan = parseInt(element.attribs.rowspan)
             var teachers = []
             // then we need our teacher
             // we start a loop from 1

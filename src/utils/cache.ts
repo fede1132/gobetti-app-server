@@ -24,7 +24,7 @@ export class Cache {
         "insert into cache (value, time, id) values ($value, $time, $key)")
         .run({
             key: String(key),
-            value: JSON.stringify(value),
+            value: typeof value === 'object' ? JSON.stringify(value) : value,
             time: String(this.unix())
         })
         return stmt.changes > 0

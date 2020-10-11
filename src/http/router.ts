@@ -5,13 +5,12 @@ import * as scrap from '../utils/scrap'
 import * as env from 'env-var'
 
 export class Router {
-    app: App
+    app: App = new App()
 
     constructor() {
-        this.app = new App()
         // get last hour url
         this.app.get('/hour', async (req, res) => {
-            res.send(cache.has("HourURL")?JSON.stringify(cache.get("HourURL").value):"{error: true, message: \"not available\"}")
+            res.send(cache.has("HourURL")?cache.get("HourURL").value:"{error: true, message: \"not available\"}")
         })
 
         this.app.get('/hour/values', async (req, res) => {
@@ -33,12 +32,12 @@ export class Router {
                 res.send(`{"time": ${db.time}, "value": ${db.value}}`)
                 return
             }
-            var obj = await scrap.scrapHour(`${URL_BASE}${cache.get("HourURL").value}`, type, req.params.value)
+            var obj = await scrap.scrapHour(`${cache.get("HourURL").value}`, type, req.params.value)
             var unix = cache.unix()
             res.send(`{"time": ${unix}, "value": ${JSON.stringify(obj)}}`)
             cache.set(`${type}:${req.params.value}`, obj)
         })
-        const port: number = env.get('PORT').required().asPortNumber()
+        const port: number = env.get('PORT').default(8000).asPortNumber()
         this.app.listen(port, ()=>console.log(`[HTTP] Listening on ${port}`)) 
     }
 }

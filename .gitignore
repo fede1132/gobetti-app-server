@@ -8,5 +8,9 @@
 *.js
 *.js.map
 
-# ignore compiled files
+# ignore compiled files and test file
 /out
+out.txt
+
+# ignore cache file
+cache.db
